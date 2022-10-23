@@ -24,7 +24,7 @@ jobs:
       - name: Run the Docker image
         run : docker run -e CI=true ashwinathappan/docker-react npm run test
 
-      - name: Zip the Deployment Package
+      - name: Generate deployment package
         run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
 
       - name: Deploy to ElasticBeanstalk
