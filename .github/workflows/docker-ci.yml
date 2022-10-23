@@ -8,7 +8,13 @@ env:
   AWS_REGION_NAME    : "us-east-1"
 
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   CI-CD:
