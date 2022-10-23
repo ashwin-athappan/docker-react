@@ -4,7 +4,7 @@ env:
   EB_S3_BUCKET_NAME  : "elasticbeanstalk-us-east-1-496016226872"
   EB_APPLICATION_NAME: "Docker"
   EB_ENVIRONMENT_NAME: "Docker-env"
-  DEPLOY_PACKAGE_NAME: "Docker-${{ github.sha }}.zip"
+  DEPLOY_PACKAGE_NAME: "deploy.zip"
   AWS_REGION_NAME    : "us-east-1"
 
 
