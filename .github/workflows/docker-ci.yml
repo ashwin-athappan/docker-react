@@ -1,4 +1,12 @@
-name: Docker CI
+name: Docker CI-CD
+
+env:
+  EB_S3_BUCKET_NAME  : "elasticbeanstalk-us-east-1-496016226872"
+  EB_APPLICATION_NAME: "Docker"
+  EB_ENVIRONMENT_NAME: "Docker-env"
+  DEPLOY_PACKAGE_NAME: "Docker-${{ github.sha }}.zip"
+  AWS_REGION_NAME    : "us-east-1"
+
 
 on: [push]
 
@@ -7,8 +15,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Git clone repository
+        uses: actions/checkout@v3
+
       - name: Build the Docker image
-        run: docker build -t ashwinathappan/docker-react -f Dockerfile.dev .
+        run : docker build -t ashwinathappan/docker-react -f Dockerfile.dev .
+
       - name: Run the Docker image
-        run: docker run -e CI=true ashwinathappan/docker-react npm run test
+        run : docker run -e CI=true ashwinathappan/docker-react npm run test
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region           : ${{ env.AWS_REGION_NAME }}
+
+      - name: Copy Deployment Package to S3 bucket
+        run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ EB_S3_BUCKET_NAME }}/
